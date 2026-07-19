@@ -50,7 +50,7 @@ class HttpClient implements HttpClientInterface
             ->withHeader('User-Agent', $this->userAgent);
 
         if ($body !== null) {
-            $stream = $this->streamFactory->createStream(json_encode($body));
+            $stream = $this->streamFactory->createStream(json_encode($body, JSON_UNESCAPED_SLASHES));
             $request = $request->withBody($stream);
         }
 

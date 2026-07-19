@@ -13,7 +13,7 @@ class Signer
 
     public static function buildStringToSign(string $httpMethod, string $endpointUrl, ?array $requestBody, string $timestamp): string
     {
-        $bodyJson = $requestBody !== null ? json_encode($requestBody) : '';
+        $bodyJson = $requestBody !== null ? json_encode($requestBody, JSON_UNESCAPED_SLASHES) : '';
         $hashedBody = strtolower(hash('sha256', $bodyJson, false));
 
         return strtoupper($httpMethod) . ':' . $endpointUrl . ':' . $hashedBody . ':' . $timestamp;
@@ -40,7 +40,7 @@ class Signer
 
     public static function verify(string $signature, string $httpMethod, string $endpointUrl, ?array $requestBody, string $timestamp, string $publicKey): bool
     {
-        $bodyJson = $requestBody !== null ? json_encode($requestBody) : '';
+        $bodyJson = $requestBody !== null ? json_encode($requestBody, JSON_UNESCAPED_SLASHES) : '';
         $hashedBody = strtolower(hash('sha256', $bodyJson, false));
 
         $stringToSign = strtoupper($httpMethod) . ':' . $endpointUrl . ':' . $hashedBody . ':' . $timestamp;
